@@ -1,0 +1,62 @@
+name: 01 - Pull Request Validation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: pr-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Build, Test, and Static Validation
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Maven test
+        run: mvn -B clean test
+
+      - name: Maven package
+        run: mvn -B -DskipTests package
+
+      - name: Docker build check
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: sonali-intellect-demo-cicd-gitops:pr-${{ github.sha }}
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Render Kubernetes base
+        run: kubectl kustomize kubernetes/base
+
+      - name: Render local overlay
+        run: kubectl kustomize kubernetes/overlays/local
+
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: "0"

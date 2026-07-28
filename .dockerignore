@@ -1,0 +1,15 @@
+.git
+.github
+target
+course
+docs
+diagrams
+argocd
+kind
+kubernetes
+scripts
+*.md
+*.log
+.idea
+.vscode
+

@@ -1,0 +1,10 @@
+flowchart LR
+  Dev[Developer] --> GitHub[GitHub repository]
+  GitHub --> Actions[GitHub Actions]
+  Actions --> Harbor[Harbor registry]
+  Actions --> PR[Promotion PR updates digest]
+  PR --> GitOps[Git desired state]
+  GitOps --> Argo[Argo CD pulls]
+  Argo --> Kind[Kind cluster]
+  Kind --> Lens[Lens and kubectl observation]
+

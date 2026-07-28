@@ -1,0 +1,7 @@
+flowchart LR
+  Image[Harbor image digest] --> Overlay[Kustomize overlay]
+  Overlay --> Git[Git commit or PR]
+  Git --> Argo[Argo CD watches Git]
+  Argo --> API[Kubernetes API]
+  API --> Pods[New ReplicaSet and Pods]
+

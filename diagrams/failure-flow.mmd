@@ -1,0 +1,6 @@
+flowchart LR
+  Symptom[Symptom] --> Observe[Observe in GitHub, Harbor, Argo CD, Lens, or kubectl]
+  Observe --> Cause[Identify likely cause]
+  Cause --> Fix[Apply fix]
+  Fix --> Verify[Verify healthy state]
+

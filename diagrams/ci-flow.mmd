@@ -1,0 +1,8 @@
+flowchart LR
+  PR[Pull Request] --> Build[Maven build]
+  Build --> Tests[Unit tests]
+  Tests --> Static[Static checks]
+  Static --> Docker[Docker build check]
+  Docker --> Kustomize[Kustomize render]
+  Kustomize --> Review[Required checks green]
+

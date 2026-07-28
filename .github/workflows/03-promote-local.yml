@@ -1,0 +1,77 @@
+name: 03 - Promote Image Digest to Local GitOps
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_ref:
+        description: "Full immutable image reference, for example registry/project/name@sha256:..."
+        required: true
+        type: string
+      mode:
+        description: "training-fast or production-like"
+        required: true
+        default: "production-like"
+        type: choice
+        options:
+          - production-like
+          - training-fast
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: promote-local-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Update Kustomize Overlay
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2
+        with:
+          kustomize-version: "5.4.3"
+
+      - name: Update local overlay digest
+        shell: bash
+        run: |
+          image="${{ inputs.image_ref }}"
+          repo="${image%@sha256:*}"
+          digest="sha256:${image##*@sha256:}"
+          cd kubernetes/overlays/local
+          kustomize edit set image "demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops=${repo}@${digest}"
+
+      - name: Render local overlay
+        run: kubectl kustomize kubernetes/overlays/local
+
+      - name: Create promotion pull request
+        if: ${{ inputs.mode == 'production-like' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: promote/local-${{ github.run_number }}
+          commit-message: "Promote local image digest"
+          title: "Promote local image digest"
+          body: |
+            Updates the local GitOps overlay to an immutable image digest.
+
+            Argo CD will reconcile only after this PR is merged.
+
+      - name: Commit directly for training-fast mode
+        if: ${{ inputs.mode == 'training-fast' }}
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kubernetes/overlays/local/kustomization.yaml
+          git commit -m "Promote local image digest"
+          git push

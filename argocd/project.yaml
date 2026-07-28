@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: sonali-intellect-training
+  namespace: argocd
+spec:
+  description: Sonali Intellect CI/CD and GitOps training applications
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: si-demo-local
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+

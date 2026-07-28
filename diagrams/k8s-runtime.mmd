@@ -1,0 +1,12 @@
+flowchart TB
+  Namespace[Namespace si-demo-local] --> SA[ServiceAccount]
+  Namespace --> Deploy[Deployment]
+  Deploy --> RS[ReplicaSet]
+  RS --> Pod1[Pod]
+  RS --> Pod2[Pod]
+  Service[Service] --> Pod1
+  Service --> Pod2
+  PDB[PodDisruptionBudget] --> Deploy
+  NetworkPolicy[NetworkPolicy] --> Pod1
+  NetworkPolicy --> Pod2
+
