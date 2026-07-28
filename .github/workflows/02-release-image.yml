@@ -76,7 +76,7 @@ jobs:
           output-file: sbom.spdx.json
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-${{ github.sha }}
           path: sbom.spdx.json
@@ -102,7 +102,7 @@ jobs:
           printf '%s\n' "${image_ref}" > image-digest.txt
 
       - name: Upload digest artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: image-digest-${{ github.sha }}
           path: image-digest.txt
