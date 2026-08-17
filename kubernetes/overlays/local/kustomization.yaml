@@ -2,17 +2,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: si-demo-local
 resources:
-  - namespace.yaml
-  - ../../base
+- namespace.yaml
+- ../../base
 images:
-  - name: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
-    digest: sha256:8d245ae4481dcb8543095c04cf1f209f57936bfc0e8c88535d3662c587c44832
+- digest: sha256:70af9c9ad759e41554d465818f9162ee10309e7d9fd53159826c39209cdb13e7
+  name: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
+  newName: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
 patches:
-  - target:
-      kind: Deployment
-      name: sonali-intellect-demo
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 2
-
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 2
+  target:
+    kind: Deployment
+    name: sonali-intellect-demo
