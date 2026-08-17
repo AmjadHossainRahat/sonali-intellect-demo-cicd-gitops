@@ -107,7 +107,7 @@ For the CI push account:
 7. Save the exact generated username and token in GitHub Actions secrets:
 
 ```text
-HARBOR_USERNAME = robot$si_demo_harbor+ci-push
+HARBOR_USERNAME = robot_si_demo_harbor+ci-push
 HARBOR_PASSWORD = <ci-push robot token>
 ```
 
@@ -121,11 +121,11 @@ For the Kubernetes pull account:
 6. Use this exact generated username and token when creating the local Kubernetes pull secret:
 
 ```text
-HARBOR_USERNAME = robot$si_demo_harbor+cluster-pull
+HARBOR_USERNAME = robot_si_demo_harbor+cluster-pull
 HARBOR_PASSWORD = <cluster-pull robot token>
 ```
 
-Modern project robot usernames usually include the project name, for example `robot$si_demo_harbor+cluster-pull`. Copy the exact username Harbor shows; do not shorten it.
+Modern project robot usernames usually include the project name. In `demo.goharbor.io`, the current convention is `robot_si_demo_harbor+cluster-pull`. Copy the exact username Harbor shows; do not shorten it.
 
 ## Windows Full Local Cycle
 
@@ -142,7 +142,7 @@ Create the Harbor pull secret before syncing the application:
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
-$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
+$env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -224,7 +224,7 @@ Create the Harbor pull secret after setting external credentials:
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
-$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
+$env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -233,7 +233,7 @@ Git Bash/Linux/macOS:
 
 ```bash
 export HARBOR_REGISTRY=demo.goharbor.io
-export HARBOR_USERNAME='robot$si_demo_harbor+cluster-pull'
+export HARBOR_USERNAME='robot_si_demo_harbor+cluster-pull'
 export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```
@@ -304,7 +304,7 @@ Use GitHub Secrets for credentials and repository variables for non-sensitive de
 |---|---|---|---|
 | `HARBOR_REGISTRY` | Variable or secret | `demo.goharbor.io` | Harbor host |
 | `HARBOR_PROJECT` | Variable or secret | `si_demo_harbor` | Harbor project |
-| `HARBOR_USERNAME` | Secret | `robot$si_demo_harbor+ci-push` | CI push identity |
+| `HARBOR_USERNAME` | Secret | `robot_si_demo_harbor+ci-push` | CI push identity |
 | `HARBOR_PASSWORD` | Secret | `<robot-token>` | CI push token |
 
 Do not commit real credentials. For robot usernames, copy the exact value from Harbor because the prefix format can vary by Harbor version and configuration.

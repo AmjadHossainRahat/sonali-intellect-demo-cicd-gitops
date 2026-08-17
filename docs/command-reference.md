@@ -71,7 +71,7 @@ First robot account: ci-push, repository push and pull permissions
 Second robot account: cluster-pull, repository pull permission only
 ```
 
-Copy the exact robot usernames from Harbor. Modern project robot accounts commonly look like `robot$si_demo_harbor+ci-push` and `robot$si_demo_harbor+cluster-pull`.
+Copy the exact robot usernames from Harbor. In `demo.goharbor.io`, the current convention looks like `robot_si_demo_harbor+ci-push` and `robot_si_demo_harbor+cluster-pull`.
 
 Why two robot accounts:
 
@@ -96,7 +96,7 @@ GitHub Actions release secrets and variables:
 ```text
 HARBOR_REGISTRY = demo.goharbor.io
 HARBOR_PROJECT = si_demo_harbor
-HARBOR_USERNAME = robot$si_demo_harbor+ci-push
+HARBOR_USERNAME = robot_si_demo_harbor+ci-push
 HARBOR_PASSWORD = <ci-push robot token>
 ```
 
@@ -105,7 +105,7 @@ Windows PowerShell:
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
 $env:HARBOR_PROJECT = "si_demo_harbor"
-$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
+$env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -115,7 +115,7 @@ Git Bash/Linux/macOS:
 ```bash
 export HARBOR_REGISTRY=demo.goharbor.io
 export HARBOR_PROJECT=si_demo_harbor
-export HARBOR_USERNAME='robot$si_demo_harbor+cluster-pull'
+export HARBOR_USERNAME='robot_si_demo_harbor+cluster-pull'
 export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```
