@@ -72,11 +72,27 @@ Git Bash/Linux/macOS:
 
 ## Windows Full Local Cycle
 
-After `.\scripts\prerequisites.ps1` reports all prerequisites as passing, run the local classroom setup from PowerShell:
+After `.\scripts\prerequisites.ps1` reports all prerequisites as passing, run the local classroom setup from PowerShell.
+
+Create the Kind cluster and install Argo CD:
 
 ```powershell
 .\scripts\create-cluster.ps1
 .\scripts\install-argocd.ps1
+```
+
+Create the Harbor pull secret before syncing the application:
+
+```powershell
+$env:HARBOR_REGISTRY = "demo.goharbor.io"
+$env:HARBOR_USERNAME = 'robot$cluster-pull'
+$env:HARBOR_PASSWORD = "<robot-token>"
+.\scripts\create-registry-secret.ps1
+```
+
+Only apply the Argo CD Application after `kubernetes/overlays/local/kustomization.yaml` points to a real Harbor image digest. The placeholder digest in a fresh clone is not a runnable image.
+
+```powershell
 kubectl apply -f argocd/project.yaml
 kubectl apply -f argocd/application-local.yaml
 ```
@@ -165,7 +181,7 @@ export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```
 
-Apply Argo CD resources:
+Apply Argo CD resources after the Harbor pull secret exists and the local overlay contains a real image digest:
 
 ```bash
 kubectl apply -f argocd/project.yaml

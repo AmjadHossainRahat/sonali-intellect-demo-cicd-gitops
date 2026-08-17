@@ -6,7 +6,7 @@ metadata:
 spec:
   project: sonali-intellect-training
   source:
-    repoURL: https://github.com/CHANGE_ME/sonali-intellect-demo-cicd-gitops.git
+    repoURL: https://github.com/AmjadHossainRahat/sonali-intellect-demo-cicd-gitops.git
     targetRevision: main
     path: kubernetes/overlays/local
   destination:
@@ -24,4 +24,3 @@ spec:
         duration: 10s
         factor: 2
         maxDuration: 2m
-

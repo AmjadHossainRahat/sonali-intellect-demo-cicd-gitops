@@ -7,8 +7,6 @@ Windows PowerShell:
 ```powershell
 .\scripts\install-argocd.ps1
 kubectl -n argocd get pods
-kubectl apply -f argocd/project.yaml
-kubectl apply -f argocd/application-local.yaml
 ```
 
 Git Bash/Linux/macOS:
@@ -16,6 +14,11 @@ Git Bash/Linux/macOS:
 ```bash
 ./scripts/install-argocd.sh
 kubectl -n argocd get pods
+```
+
+Before applying the Application, create the Harbor pull secret and make sure `kubernetes/overlays/local/kustomization.yaml` contains a real Harbor image digest. The fresh placeholder digest is not a runnable image.
+
+```powershell
 kubectl apply -f argocd/project.yaml
 kubectl apply -f argocd/application-local.yaml
 ```

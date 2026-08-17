@@ -125,6 +125,11 @@ Windows PowerShell:
 
 ```powershell
 .\scripts\install-argocd.ps1
+```
+
+Create the Harbor pull secret and promote a real image digest before applying the Application:
+
+```powershell
 kubectl apply -f argocd/project.yaml
 kubectl apply -f argocd/application-local.yaml
 kubectl -n argocd port-forward svc/argocd-server 8081:443
@@ -134,6 +139,11 @@ Git Bash/Linux/macOS:
 
 ```bash
 ./scripts/install-argocd.sh
+```
+
+Create the Harbor pull secret and promote a real image digest before applying the Application:
+
+```bash
 kubectl apply -f argocd/project.yaml
 kubectl apply -f argocd/application-local.yaml
 kubectl -n argocd port-forward svc/argocd-server 8081:443

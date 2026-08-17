@@ -12,7 +12,7 @@ ARG BUILD_COMMIT=local
 ARG BUILD_TIME=local
 LABEL org.opencontainers.image.title="sonali-intellect-demo-cicd-gitops"
 LABEL org.opencontainers.image.description="A step-by-step CI/CD and GitOps training lab for Sonali Intellect."
-LABEL org.opencontainers.image.source="https://github.com/CHANGE_ME/sonali-intellect-demo-cicd-gitops"
+LABEL org.opencontainers.image.source="https://github.com/AmjadHossainRahat/sonali-intellect-demo-cicd-gitops"
 
 RUN addgroup -S app && adduser -S app -G app
 WORKDIR /app
