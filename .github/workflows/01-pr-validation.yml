@@ -42,7 +42,7 @@ jobs:
           tags: sonali-intellect-demo-cicd-gitops:pr-${{ github.sha }}
 
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+        uses: azure/setup-kubectl@v5
         with:
           version: v1.31.0
 
