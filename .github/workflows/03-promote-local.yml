@@ -56,7 +56,7 @@ jobs:
 
       - name: Create promotion pull request
         if: ${{ inputs.mode == 'production-like' }}
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: promote/local-${{ github.run_number }}
           commit-message: "Promote local image digest"
