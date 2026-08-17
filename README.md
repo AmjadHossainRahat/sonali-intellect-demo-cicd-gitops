@@ -207,6 +207,45 @@ https://localhost:8081
 
 Keep the port-forward terminal open while using the Argo CD UI.
 
+Verify the deployed application readiness in a separate PowerShell terminal:
+
+```powershell
+kubectl -n si-demo-local rollout status deployment/sonali-intellect-demo --timeout=180s
+kubectl -n si-demo-local port-forward svc/sonali-intellect-demo 8080:80
+```
+
+Keep that port-forward terminal open and browse to:
+
+```text
+http://localhost:8080/actuator/health/readiness
+```
+
+Expected readiness response:
+
+```json
+{"status":"UP"}
+```
+
+You can also browse to:
+
+```text
+http://localhost:8080/
+http://localhost:8080/api/version
+http://localhost:8080/api/build-info
+```
+
+In Lens, select context `kind-cicd-gitops-demo` and check:
+
+| Lens view | What should be healthy |
+|---|---|
+| `Workloads` -> `Deployments` -> `sonali-intellect-demo` | Desired pods match available pods, with no rollout error |
+| `Workloads` -> `Pods` in namespace `si-demo-local` | Both pods are `Running` and `Ready` |
+| Pod details -> `Containers` | Image points to the Harbor digest promoted into Git |
+| Pod details -> `Conditions` | `Ready` is true |
+| Pod details -> `Events` | No `ImagePullBackOff`, failed pull, or readiness probe failures |
+| Pod details -> `Logs` | Application starts normally without repeated restarts |
+| `Network` -> `Services` -> `sonali-intellect-demo` | Service exists on port `80` and targets pod port `8080` |
+
 ## Repository Structure
 
 | Path | Purpose |
@@ -288,8 +327,6 @@ Do not commit real credentials. For robot usernames, copy the exact value from H
 The GitHub Actions secrets above use the `ci-push` robot account. The local Kubernetes pull secret uses the separate `cluster-pull` robot account and is created from your PowerShell session with `.\scripts\create-registry-secret.ps1`.
 
 ## Training Material Path
-
-The standalone `course/` directory has been removed from this repository. Use the documentation set instead:
 
 | File | Purpose |
 |---|---|
