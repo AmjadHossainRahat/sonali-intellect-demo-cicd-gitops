@@ -73,6 +73,24 @@ Second robot account: cluster-pull, repository pull permission only
 
 Copy the exact robot usernames from Harbor. Modern project robot accounts commonly look like `robot$si_demo_harbor+ci-push` and `robot$si_demo_harbor+cluster-pull`.
 
+Robot account UI steps:
+
+1. Open Harbor -> `Projects` -> `si_demo_harbor` -> `Robot Accounts`.
+2. Click `New Robot Account`.
+3. Create `ci-push` for GitHub Actions with repository push and pull permissions. Do not grant delete permissions.
+4. Copy or export the generated secret immediately and save it in GitHub Actions as `HARBOR_USERNAME` and `HARBOR_PASSWORD`.
+5. Create `cluster-pull` for Kubernetes with pull-only repository permissions.
+6. Copy or export the generated secret immediately and use it only for the local `harbor-pull-secret`.
+
+GitHub Actions release secrets and variables:
+
+```text
+HARBOR_REGISTRY = demo.goharbor.io
+HARBOR_PROJECT = si_demo_harbor
+HARBOR_USERNAME = robot$si_demo_harbor+ci-push
+HARBOR_PASSWORD = <ci-push robot token>
+```
+
 Windows PowerShell:
 
 ```powershell

@@ -79,11 +79,44 @@ Before running the release workflow or creating the cluster pull secret, create 
 3. Keep the project private for the training flow so Kubernetes must use `harbor-pull-secret` to pull images.
 4. In the project `Configuration` tab, enable automatic image scan on push if the option is available.
 5. Do not enable blocking controls such as prevent vulnerable images from running or content trust for the first classroom run; those can block pulls before learners reach the GitOps lesson.
-6. Create a project robot account named `ci-push` with push and pull permissions for repositories in `si_demo_harbor`.
-7. Create a second project robot account named `cluster-pull` with pull-only permissions for repositories in `si_demo_harbor`.
-8. Copy the exact robot usernames and tokens shown by Harbor. Modern project robot usernames usually include the project name, for example `robot$si_demo_harbor+cluster-pull`; use what Harbor shows, not a shortened example.
+6. Create the two project robot accounts described below.
 
 If you choose a different Harbor project name, update `HARBOR_PROJECT`, the image references under `kubernetes/`, and the promotion workflow before running the full cycle.
+
+### Harbor Robot Accounts
+
+Create robot accounts inside the `si_demo_harbor` project, not from a global/system robot account page.
+
+For the CI push account:
+
+1. Open Harbor -> `Projects` -> `si_demo_harbor` -> `Robot Accounts`.
+2. Click `New Robot Account`.
+3. Name it `ci-push`.
+4. Set an expiration suitable for the training, or choose never-expiring only for a short-lived demo environment.
+5. Grant repository push and pull permissions. If Harbor shows granular permissions, include repository/artifact read or list permissions required by the UI, but do not grant delete permissions.
+6. Finish the wizard and copy or export the generated secret immediately. Harbor will not show the token again later.
+7. Save the exact generated username and token in GitHub Actions secrets:
+
+```text
+HARBOR_USERNAME = robot$si_demo_harbor+ci-push
+HARBOR_PASSWORD = <ci-push robot token>
+```
+
+For the Kubernetes pull account:
+
+1. Stay in Harbor -> `Projects` -> `si_demo_harbor` -> `Robot Accounts`.
+2. Click `New Robot Account`.
+3. Name it `cluster-pull`.
+4. Grant pull-only repository permissions. If Harbor shows granular permissions, include repository/artifact read or list permissions required for pulling, but do not grant push or delete permissions.
+5. Finish the wizard and copy or export the generated secret immediately.
+6. Use this exact generated username and token when creating the local Kubernetes pull secret:
+
+```text
+HARBOR_USERNAME = robot$si_demo_harbor+cluster-pull
+HARBOR_PASSWORD = <cluster-pull robot token>
+```
+
+Modern project robot usernames usually include the project name, for example `robot$si_demo_harbor+cluster-pull`. Copy the exact username Harbor shows; do not shorten it.
 
 ## Windows Full Local Cycle
 
