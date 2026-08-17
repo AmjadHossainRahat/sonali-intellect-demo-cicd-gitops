@@ -73,6 +73,15 @@ Second robot account: cluster-pull, repository pull permission only
 
 Copy the exact robot usernames from Harbor. Modern project robot accounts commonly look like `robot$si_demo_harbor+ci-push` and `robot$si_demo_harbor+cluster-pull`.
 
+Why two robot accounts:
+
+| Robot account | Used by | Permission needed |
+|---|---|---|
+| `ci-push` | GitHub Actions release workflow | Push and pull |
+| `cluster-pull` | Kubernetes image pull secret | Pull only |
+
+Do not reuse `ci-push` as the Kubernetes pull secret. Kubernetes only needs to download images, and using a pull-only account prevents a leaked cluster secret from publishing or replacing images in Harbor.
+
 Robot account UI steps:
 
 1. Open Harbor -> `Projects` -> `si_demo_harbor` -> `Robot Accounts`.

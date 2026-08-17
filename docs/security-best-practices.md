@@ -6,8 +6,8 @@ This repository demonstrates practical supply-chain basics without turning the t
 |---|---|
 | No secrets in Git | Harbor values are documented as GitHub Secrets or environment variables |
 | Least-privilege workflows | Workflows use narrow `permissions` blocks |
-| CI push identity | Harbor robot account pushes images |
-| Cluster pull identity | Separate Harbor pull secret for Kubernetes |
+| CI push identity | Dedicated Harbor `ci-push` robot account can publish images from GitHub Actions |
+| Cluster pull identity | Separate Harbor `cluster-pull` robot account can only pull images through the Kubernetes image pull secret |
 | Non-root runtime | Dockerfile creates and runs as `app` user |
 | Restricted pod context | Kubernetes drops capabilities, blocks privilege escalation, and uses RuntimeDefault seccomp |
 | Health probes | Readiness, liveness, and startup probes are declared |
