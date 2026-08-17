@@ -1,6 +1,6 @@
 # Security Best Practices
 
-This repository demonstrates practical supply-chain basics without turning the course into a security tooling course.
+This repository demonstrates practical supply-chain basics without turning the training lab into a security tooling exercise.
 
 | Practice | Implementation |
 |---|---|
@@ -18,4 +18,4 @@ This repository demonstrates practical supply-chain basics without turning the c
 | Branch protection | Document required checks and reviewer expectations |
 | Action versions | Workflows use explicit action major versions and pin tool versions where the action supports it |
 
-Cosign signing and stronger provenance are good production additions. They are documented as future improvements because the first course version should keep the delivery flow easy to see.
+Cosign signing and stronger provenance are good production additions. They are documented as future improvements because the first training version should keep the delivery flow easy to see.

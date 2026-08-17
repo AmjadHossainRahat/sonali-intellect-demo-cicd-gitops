@@ -112,7 +112,6 @@ Keep the port-forward terminal open while using the Argo CD UI.
 | `kind/` | Three-node Kind cluster configuration |
 | `argocd/` | Argo CD Project and Application resources |
 | `scripts/` | Bootstrap, verification, failure, and recovery scripts |
-| `course/` | Lesson-by-lesson instructor material |
 | `docs/` | Catalogues, references, observation guides, and storyboard |
 | `diagrams/` | Mermaid diagrams for classroom explanation |
 
@@ -237,24 +236,18 @@ Use GitHub Secrets for credentials and repository variables for non-sensitive de
 
 Do not commit real credentials.
 
-## Lesson Path
+## Training Material Path
 
-Start with `course/README.md`, then teach lessons in order from `course/00-full-picture/` through `course/12-production-readiness/`.
+The standalone `course/` directory has been removed from this repository. Use the documentation set instead:
 
-Each lesson contains:
-
-```text
-lesson.md
-instructor-notes.md
-demo-script.md
-repo-map.md
-commands.md
-observe.md
-expected-output.md
-troubleshooting.md
-```
-
-Lesson 11 also contains selected failure and recovery materials.
+| File | Purpose |
+|---|---|
+| `docs/presentation-storyboard.md` | PowerPoint-ready training storyline |
+| `docs/command-reference.md` | Commands for app, Docker, Kind, Kubernetes, Argo CD, Lens, failure demos, and cleanup |
+| `docs/observation-guide.md` | What to observe in each tool/UI |
+| `docs/lens-guide.md` | Lens navigation with matching `kubectl` commands |
+| `docs/troubleshooting-guide.md` | Failure symptoms, inspection commands, fixes, and verification |
+| `docs/configuration-catalog.md` | File-to-tool mapping |
 
 ## Observation Tools During The Demo
 

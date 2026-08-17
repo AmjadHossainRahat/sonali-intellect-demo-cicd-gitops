@@ -143,4 +143,4 @@ Repository files to show: `docs/production-readiness.md`, `docs/production-compa
 Command/action to run: No live command required.
 Tool/UI to open: VS Code.
 Expected audience observation: The delivery model carries forward, but controls mature.
-Speaker notes: Avoid adding every advanced tool to the core course.
+Speaker notes: Avoid adding every advanced tool to the core training flow.
