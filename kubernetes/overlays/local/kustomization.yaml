@@ -6,7 +6,7 @@ resources:
   - ../../base
 images:
   - name: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:8d245ae4481dcb8543095c04cf1f209f57936bfc0e8c88535d3662c587c44832
 patches:
   - target:
       kind: Deployment
