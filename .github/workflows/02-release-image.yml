@@ -54,7 +54,7 @@ jobs:
           HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT || secrets.HARBOR_PROJECT || 'si_demo_harbor' }}
 
       - name: Build image locally for scan
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true

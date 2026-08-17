@@ -35,7 +35,7 @@ jobs:
         run: mvn -B -DskipTests package
 
       - name: Docker build check
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: false
