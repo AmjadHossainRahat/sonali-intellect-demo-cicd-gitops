@@ -5,7 +5,8 @@ WORKDIR /workspace
 COPY pom.xml .
 RUN --mount=type=cache,target=/root/.m2 mvn -B -q dependency:go-offline
 COPY src ./src
-RUN --mount=type=cache,target=/root/.m2 mvn -B clean package
+# Tests run in CI before the image build; skip them here to keep the image build deterministic.
+RUN --mount=type=cache,target=/root/.m2 mvn -B -DskipTests package
 
 FROM eclipse-temurin:21-jre-alpine
 ARG BUILD_COMMIT=local
