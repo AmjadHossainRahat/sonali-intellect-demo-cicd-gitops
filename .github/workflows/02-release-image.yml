@@ -114,6 +114,25 @@ jobs:
           echo "image_ref=${image_ref}" >> "$GITHUB_OUTPUT"
           printf '%s\n' "${image_ref}" > image-digest.txt
 
+      - name: Add immutable reference to Docker Build summary
+        shell: bash
+        run: |
+          echo "Full immutable image reference:"
+          echo "${{ steps.digest.outputs.image_ref }}"
+          echo "::notice title=Full immutable image reference::${{ steps.digest.outputs.image_ref }}"
+
+          {
+            echo "### Docker Build summary"
+            echo ""
+            echo "**Full immutable image reference**"
+            echo ""
+            echo "\`\`\`text"
+            echo "${{ steps.digest.outputs.image_ref }}"
+            echo "\`\`\`"
+            echo ""
+            echo "Copy this value into workflow \`03 - Promote Image Digest to Local GitOps\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload digest artifact
         uses: actions/upload-artifact@v7
         with:
