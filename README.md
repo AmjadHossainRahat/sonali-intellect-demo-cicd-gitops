@@ -261,8 +261,8 @@ Use GitHub Secrets for credentials and repository variables for non-sensitive de
 
 | Name | Type | Example | Purpose |
 |---|---|---|---|
-| `HARBOR_REGISTRY` | Variable or secret | `demo.goharbor.io` | Harbor host |
-| `HARBOR_PROJECT` | Variable or secret | `si_demo_harbor` | Harbor project |
+| `HARBOR_REGISTRY` | Optional variable or secret | `demo.goharbor.io` | Harbor host override; workflow defaults to this value |
+| `HARBOR_PROJECT` | Optional variable or secret | `si_demo_harbor` | Harbor project override; workflow defaults to this value |
 | `HARBOR_USERNAME` | Secret | `robot_si_demo_harbor+ci-push` | CI push identity |
 | `HARBOR_PASSWORD` | Secret | `<robot-token>` | CI push token |
 

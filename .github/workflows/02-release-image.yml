@@ -45,11 +45,13 @@ jobs:
         id: meta
         shell: bash
         run: |
+          registry="${HARBOR_REGISTRY%/}"
+          project="${HARBOR_PROJECT#/}"
           echo "tag=sha-${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
-          echo "repository=${HARBOR_REGISTRY}/${HARBOR_PROJECT}/${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "repository=${registry}/${project}/${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
         env:
-          HARBOR_REGISTRY: ${{ vars.HARBOR_REGISTRY || secrets.HARBOR_REGISTRY }}
-          HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT || secrets.HARBOR_PROJECT }}
+          HARBOR_REGISTRY: ${{ vars.HARBOR_REGISTRY || secrets.HARBOR_REGISTRY || 'demo.goharbor.io' }}
+          HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT || secrets.HARBOR_PROJECT || 'si_demo_harbor' }}
 
       - name: Build image locally for scan
         uses: docker/build-push-action@v6
@@ -81,10 +83,21 @@ jobs:
           name: sbom-${{ github.sha }}
           path: sbom.spdx.json
 
+      - name: Validate Harbor push credentials
+        shell: bash
+        run: |
+          if [ -z "${HARBOR_USERNAME}" ] || [ -z "${HARBOR_PASSWORD}" ]; then
+            echo "::error::Set GitHub Actions secrets HARBOR_USERNAME and HARBOR_PASSWORD from the Harbor ci-push robot account."
+            exit 1
+          fi
+        env:
+          HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
+
       - name: Login to Harbor
         uses: docker/login-action@v4
         with:
-          registry: ${{ vars.HARBOR_REGISTRY || secrets.HARBOR_REGISTRY }}
+          registry: ${{ vars.HARBOR_REGISTRY || secrets.HARBOR_REGISTRY || 'demo.goharbor.io' }}
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
