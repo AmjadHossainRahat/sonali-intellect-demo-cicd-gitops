@@ -147,7 +147,23 @@ $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
 
-Only apply the Argo CD Application after `kubernetes/overlays/local/kustomization.yaml` points to a real Harbor image digest. The placeholder digest in a fresh clone is not a runnable image.
+Do not apply the Argo CD Application immediately from a fresh clone. The file `kubernetes/overlays/local/kustomization.yaml` starts with this placeholder image digest:
+
+```text
+sha256:0000000000000000000000000000000000000000000000000000000000000000
+```
+
+That digest is fake. It only keeps the manifest structure valid before the first image is published. If Argo CD syncs this placeholder, Kubernetes will try to pull an image that does not exist.
+
+First publish a real image to Harbor, then promote that digest into Git:
+
+1. Run the GitHub Actions workflow `02 - Release Image to Harbor`.
+2. Copy the published image reference from the workflow output or Harbor UI. It should look like `demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops@sha256:<real-digest>`.
+3. Run the GitHub Actions workflow `03 - Promote Image Digest to Local GitOps` with that full image reference.
+4. Merge the promotion PR, or use `training-fast` mode for a direct demo commit.
+5. Confirm `kubernetes/overlays/local/kustomization.yaml` now has a real digest instead of all zeros.
+
+Then apply the Argo CD resources:
 
 ```powershell
 kubectl apply -f argocd/project.yaml
@@ -238,7 +254,9 @@ export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```
 
-Apply Argo CD resources after the Harbor pull secret exists and the local overlay contains a real image digest:
+Do not apply Argo CD resources from a fresh clone while the local overlay still contains the all-zero placeholder digest. First publish an image with `02 - Release Image to Harbor`, then promote the full Harbor image reference with `03 - Promote Image Digest to Local GitOps`.
+
+Apply Argo CD resources only after the Harbor pull secret exists and `kubernetes/overlays/local/kustomization.yaml` contains a real image digest:
 
 ```bash
 kubectl apply -f argocd/project.yaml

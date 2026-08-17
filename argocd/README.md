@@ -16,7 +16,15 @@ Git Bash/Linux/macOS:
 kubectl -n argocd get pods
 ```
 
-Before applying the Application, create the Harbor pull secret and make sure `kubernetes/overlays/local/kustomization.yaml` contains a real Harbor image digest. The fresh placeholder digest is not a runnable image.
+Before applying the Application, create the Harbor pull secret and make sure `kubernetes/overlays/local/kustomization.yaml` contains a real Harbor image digest.
+
+A fresh clone contains an all-zero placeholder digest. That placeholder is not an image in Harbor; it only keeps the YAML valid before the first release. Publish an image with the release workflow, then run the promotion workflow so the local overlay contains a real value like:
+
+```text
+demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops@sha256:<real-digest>
+```
+
+After that, apply the Argo CD resources:
 
 ```powershell
 kubectl apply -f argocd/project.yaml

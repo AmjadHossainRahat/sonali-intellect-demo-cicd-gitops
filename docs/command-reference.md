@@ -167,7 +167,9 @@ Windows PowerShell:
 .\scripts\install-argocd.ps1
 ```
 
-Create the Harbor pull secret and promote a real image digest before applying the Application:
+Create the Harbor pull secret and promote a real image digest before applying the Application.
+
+The fresh clone contains a fake all-zero digest in `kubernetes/overlays/local/kustomization.yaml`. Publish an image with `02 - Release Image to Harbor`, copy the full Harbor image reference, then run `03 - Promote Image Digest to Local GitOps` so Git contains the real digest before Argo CD syncs.
 
 ```powershell
 kubectl apply -f argocd/project.yaml
@@ -181,7 +183,9 @@ Git Bash/Linux/macOS:
 ./scripts/install-argocd.sh
 ```
 
-Create the Harbor pull secret and promote a real image digest before applying the Application:
+Create the Harbor pull secret and promote a real image digest before applying the Application.
+
+The fresh clone contains a fake all-zero digest in `kubernetes/overlays/local/kustomization.yaml`. Publish an image with `02 - Release Image to Harbor`, copy the full Harbor image reference, then run `03 - Promote Image Digest to Local GitOps` so Git contains the real digest before Argo CD syncs.
 
 ```bash
 kubectl apply -f argocd/project.yaml
