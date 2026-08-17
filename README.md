@@ -204,65 +204,6 @@ Keep the port-forward terminal open while using the Argo CD UI.
 | `docs/` | Catalogues, references, observation guides, and storyboard |
 | `diagrams/` | Mermaid diagrams for classroom explanation |
 
-## Fast Start
-
-```bash
-mvn clean test
-mvn clean package
-java -jar target/*.jar
-curl http://localhost:8080/
-curl http://localhost:8080/actuator/health/readiness
-```
-
-Build the container:
-
-```bash
-docker build -t sonali-intellect-demo-cicd-gitops:local .
-docker run --rm -p 8080:8080 sonali-intellect-demo-cicd-gitops:local
-curl http://localhost:8080/api/version
-```
-
-Create the local cluster and install Argo CD:
-
-```powershell
-.\scripts\create-cluster.ps1
-.\scripts\install-argocd.ps1
-```
-
-Git Bash/Linux/macOS:
-
-```bash
-./scripts/create-cluster.sh
-./scripts/install-argocd.sh
-```
-
-Create the Harbor pull secret after setting external credentials:
-
-```powershell
-$env:HARBOR_REGISTRY = "demo.goharbor.io"
-$env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
-$env:HARBOR_PASSWORD = "<robot-token>"
-.\scripts\create-registry-secret.ps1
-```
-
-Git Bash/Linux/macOS:
-
-```bash
-export HARBOR_REGISTRY=demo.goharbor.io
-export HARBOR_USERNAME='robot_si_demo_harbor+cluster-pull'
-export HARBOR_PASSWORD='<robot-token>'
-./scripts/create-registry-secret.sh
-```
-
-Do not apply Argo CD resources from a fresh clone while the local overlay still contains the all-zero placeholder digest. First publish an image with `02 - Release Image to Harbor`, then promote the full Harbor image reference with `03 - Promote Image Digest to Local GitOps`.
-
-Apply Argo CD resources only after the Harbor pull secret exists and `kubernetes/overlays/local/kustomization.yaml` contains a real image digest:
-
-```bash
-kubectl apply -f argocd/project.yaml
-kubectl apply -f argocd/application-local.yaml
-```
-
 ## Lens And Argo CD UI Quick Start
 
 Lens connects to the Kubernetes cluster through your kubeconfig. Argo CD UI opens separately in a browser through port-forwarding.
