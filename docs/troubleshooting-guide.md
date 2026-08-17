@@ -33,18 +33,18 @@ Verification: Login step succeeds.
 
 Symptom: Push is denied or project not found.
 Where to observe: GitHub Actions logs and Harbor UI.
-Likely cause: Robot account lacks push permission or `HARBOR_PROJECT` is wrong.
+Likely cause: Project `si_demo_harbor` was not created, the robot account lacks push permission, the robot username was shortened instead of copied from Harbor, or `HARBOR_PROJECT` is wrong.
 Commands to inspect: Check Harbor project `si_demo_harbor`.
-Fix: Grant robot account push permission to the project.
+Fix: Create the project, keep it private for the lab, grant the CI robot account repository push and pull permissions, and update GitHub Secrets with the exact Harbor robot username and token.
 Verification: Image tag and digest appear in Harbor.
 
 ## Kubernetes Image Pull Failure
 
 Symptom: Pod waits or fails to start.
 Where to observe: Lens Pods view, Events tab, or `kubectl describe pod`.
-Likely cause: Missing pull secret, wrong registry, wrong digest, or no network route.
+Likely cause: Missing pull secret, wrong registry, wrong digest, shortened robot username, pull robot account without pull permission, or no network route.
 Commands to inspect: `kubectl describe pod <pod> -n si-demo-local`.
-Fix: Create `harbor-pull-secret` with `.\scripts\create-registry-secret.ps1` on Windows or `./scripts/create-registry-secret.sh` on Git Bash/Linux/macOS.
+Fix: Create `harbor-pull-secret` with `.\scripts\create-registry-secret.ps1` on Windows or `./scripts/create-registry-secret.sh` on Git Bash/Linux/macOS, using the exact pull robot username and token from Harbor.
 Verification: Pod status changes to Running and Ready.
 
 ## ImagePullBackOff

@@ -60,12 +60,25 @@ Open the pull request, then observe the Actions tab.
 
 ## Harbor
 
+Create the project in the Harbor UI before running these commands:
+
+```text
+Registry: demo.goharbor.io
+Project: si_demo_harbor
+Access: Private
+Scan on push: Enabled when available
+First robot account: ci-push, repository push and pull permissions
+Second robot account: cluster-pull, repository pull permission only
+```
+
+Copy the exact robot usernames from Harbor. Modern project robot accounts commonly look like `robot$si_demo_harbor+ci-push` and `robot$si_demo_harbor+cluster-pull`.
+
 Windows PowerShell:
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
 $env:HARBOR_PROJECT = "si_demo_harbor"
-$env:HARBOR_USERNAME = 'robot$cluster-pull'
+$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -75,7 +88,7 @@ Git Bash/Linux/macOS:
 ```bash
 export HARBOR_REGISTRY=demo.goharbor.io
 export HARBOR_PROJECT=si_demo_harbor
-export HARBOR_USERNAME='robot$cluster-pull'
+export HARBOR_USERNAME='robot$si_demo_harbor+cluster-pull'
 export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```

@@ -70,6 +70,21 @@ Git Bash/Linux/macOS:
 ./scripts/prerequisites.sh
 ```
 
+## Harbor Project Setup
+
+Before running the release workflow or creating the cluster pull secret, create the Harbor project that this lab publishes to.
+
+1. Browse to `https://demo.goharbor.io` and sign in.
+2. Create a project named `si_demo_harbor`.
+3. Keep the project private for the training flow so Kubernetes must use `harbor-pull-secret` to pull images.
+4. In the project `Configuration` tab, enable automatic image scan on push if the option is available.
+5. Do not enable blocking controls such as prevent vulnerable images from running or content trust for the first classroom run; those can block pulls before learners reach the GitOps lesson.
+6. Create a project robot account named `ci-push` with push and pull permissions for repositories in `si_demo_harbor`.
+7. Create a second project robot account named `cluster-pull` with pull-only permissions for repositories in `si_demo_harbor`.
+8. Copy the exact robot usernames and tokens shown by Harbor. Modern project robot usernames usually include the project name, for example `robot$si_demo_harbor+cluster-pull`; use what Harbor shows, not a shortened example.
+
+If you choose a different Harbor project name, update `HARBOR_PROJECT`, the image references under `kubernetes/`, and the promotion workflow before running the full cycle.
+
 ## Windows Full Local Cycle
 
 After `.\scripts\prerequisites.ps1` reports all prerequisites as passing, run the local classroom setup from PowerShell.
@@ -85,7 +100,7 @@ Create the Harbor pull secret before syncing the application:
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
-$env:HARBOR_USERNAME = 'robot$cluster-pull'
+$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -167,7 +182,7 @@ Create the Harbor pull secret after setting external credentials:
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
-$env:HARBOR_USERNAME = 'robot$cluster-pull'
+$env:HARBOR_USERNAME = 'robot$si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
 ```
@@ -176,7 +191,7 @@ Git Bash/Linux/macOS:
 
 ```bash
 export HARBOR_REGISTRY=demo.goharbor.io
-export HARBOR_USERNAME='robot$cluster-pull'
+export HARBOR_USERNAME='robot$si_demo_harbor+cluster-pull'
 export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
 ```
@@ -247,10 +262,10 @@ Use GitHub Secrets for credentials and repository variables for non-sensitive de
 |---|---|---|---|
 | `HARBOR_REGISTRY` | Variable or secret | `demo.goharbor.io` | Harbor host |
 | `HARBOR_PROJECT` | Variable or secret | `si_demo_harbor` | Harbor project |
-| `HARBOR_USERNAME` | Secret | `robot$ci-push` | CI push identity |
+| `HARBOR_USERNAME` | Secret | `robot$si_demo_harbor+ci-push` | CI push identity |
 | `HARBOR_PASSWORD` | Secret | `<robot-token>` | CI push token |
 
-Do not commit real credentials.
+Do not commit real credentials. For robot usernames, copy the exact value from Harbor because the prefix format can vary by Harbor version and configuration.
 
 ## Training Material Path
 
