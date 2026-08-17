@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1450" viewBox="0 0 2200 1450" role="img" aria-labelledby="title desc">
+  <title id="title">Post-push CI/CD and GitOps flow</title>
+  <desc id="desc">A clear swimlane diagram showing what happens after code is pushed: GitHub Actions validates and publishes an image to Harbor, GitOps records the image digest, Argo CD syncs from Git, and Kubernetes runs the application.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .title { fill: #111827; font: 700 46px Arial, sans-serif; }
+      .subtitle { fill: #4b5563; font: 400 24px Arial, sans-serif; }
+      .lane { fill: #ffffff; stroke: #d8e0eb; stroke-width: 2; }
+      .laneHeader { fill: #111827; }
+      .laneTitle { fill: #ffffff; font: 700 23px Arial, sans-serif; }
+      .card { fill: #ffffff; stroke: #c8d3e1; stroke-width: 2; }
+      .cardManual { fill: #fff7ed; stroke: #fdba74; stroke-width: 2; }
+      .cardSuccess { fill: #ecfdf5; stroke: #86efac; stroke-width: 2; }
+      .cardWarn { fill: #fff7ed; stroke: #fb923c; stroke-width: 2; }
+      .stepTitle { fill: #111827; font: 700 24px Arial, sans-serif; }
+      .stepText { fill: #374151; font: 400 20px Arial, sans-serif; }
+      .mono { fill: #334155; font: 400 18px Consolas, 'Courier New', monospace; }
+      .noteTitle { fill: #7c2d12; font: 700 22px Arial, sans-serif; }
+      .noteText { fill: #7c2d12; font: 400 19px Arial, sans-serif; }
+      .badge { fill: #0f172a; }
+      .badgeText { fill: #ffffff; font: 700 20px Arial, sans-serif; text-anchor: middle; dominant-baseline: central; }
+      .arrow { stroke: #334155; stroke-width: 4; fill: none; marker-end: url(#arrowhead); }
+      .arrowSoft { stroke: #64748b; stroke-width: 3; fill: none; stroke-dasharray: 10 9; marker-end: url(#arrowheadSoft); }
+      .caption { fill: #475569; font: 400 18px Arial, sans-serif; }
+    </style>
+    <marker id="arrowhead" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#334155"/>
+    </marker>
+    <marker id="arrowheadSoft" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M2,2 L12,7 L2,12 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="2200" height="1450"/>
+  <text class="title" x="70" y="78">After code is pushed: CI/CD + GitOps flow</text>
+  <text class="subtitle" x="70" y="116">CI creates the artifact, Harbor stores it, Git records the exact digest, Argo CD reconciles, and Kubernetes runs the app.</text>
+
+  <g transform="translate(70,165)">
+    <rect class="lane" x="0" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="0" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="28" y="46">Developer / GitHub</text>
+
+    <rect class="lane" x="350" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="350" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="378" y="46">GitHub Actions</text>
+
+    <rect class="lane" x="700" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="700" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="728" y="46">Harbor Registry</text>
+
+    <rect class="lane" x="1050" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="1050" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="1078" y="46">GitOps in Git</text>
+
+    <rect class="lane" x="1400" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="1400" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="1428" y="46">Argo CD</text>
+
+    <rect class="lane" x="1750" y="0" width="310" height="1030" rx="18"/>
+    <rect class="laneHeader" x="1750" y="0" width="310" height="74" rx="18"/>
+    <text class="laneTitle" x="1778" y="46">Kind / Kubernetes</text>
+
+    <g>
+      <rect class="card" x="25" y="115" width="260" height="160" rx="14"/>
+      <circle class="badge" cx="60" cy="150" r="22"/>
+      <text class="badgeText" x="60" y="150">1</text>
+      <text class="stepTitle" x="96" y="156">Push or merge</text>
+      <text class="stepText" x="48" y="200">GitHub stores the</text>
+      <text class="stepText" x="48" y="226">new commit on</text>
+      <text class="stepText" x="48" y="252">the main branch.</text>
+    </g>
+
+    <g>
+      <rect class="card" x="375" y="115" width="260" height="160" rx="14"/>
+      <circle class="badge" cx="410" cy="150" r="22"/>
+      <text class="badgeText" x="410" y="150">2</text>
+      <text class="stepTitle" x="446" y="156">Release starts</text>
+      <text class="stepText" x="398" y="201">Workflow runs:</text>
+      <text class="mono" x="398" y="230">02-release-image</text>
+      <path class="arrow" d="M285 195 H375"/>
+    </g>
+
+    <g>
+      <rect class="card" x="375" y="340" width="260" height="230" rx="14"/>
+      <circle class="badge" cx="410" cy="375" r="22"/>
+      <text class="badgeText" x="410" y="375">3</text>
+      <text class="stepTitle" x="446" y="381">Quality gate</text>
+      <text class="stepText" x="398" y="426">Maven tests pass.</text>
+      <text class="stepText" x="398" y="454">Docker image builds.</text>
+      <text class="stepText" x="398" y="482">Trivy scans image.</text>
+      <text class="stepText" x="398" y="510">SBOM is saved.</text>
+      <path class="arrow" d="M505 275 V340"/>
+    </g>
+
+    <g>
+      <rect class="card" x="725" y="340" width="260" height="210" rx="14"/>
+      <circle class="badge" cx="760" cy="375" r="22"/>
+      <text class="badgeText" x="760" y="375">4</text>
+      <text class="stepTitle" x="796" y="381">Publish image</text>
+      <text class="stepText" x="748" y="426">Image is pushed</text>
+      <text class="stepText" x="748" y="454">to Harbor with tag:</text>
+      <text class="mono" x="748" y="486">sha-&lt;commit&gt;</text>
+      <path class="arrow" d="M635 455 H725"/>
+    </g>
+
+    <g>
+      <rect class="cardSuccess" x="725" y="620" width="260" height="180" rx="14"/>
+      <circle class="badge" cx="760" cy="655" r="22"/>
+      <text class="badgeText" x="760" y="655">5</text>
+      <text class="stepTitle" x="796" y="661">Digest exists</text>
+      <text class="stepText" x="748" y="706">Harbor stores the</text>
+      <text class="stepText" x="748" y="734">immutable digest:</text>
+      <text class="mono" x="748" y="766">sha256:&lt;digest&gt;</text>
+      <path class="arrow" d="M855 550 V620"/>
+    </g>
+
+    <g>
+      <rect class="cardManual" x="375" y="650" width="260" height="220" rx="14"/>
+      <circle class="badge" cx="410" cy="685" r="22"/>
+      <text class="badgeText" x="410" y="685">6</text>
+      <text class="stepTitle" x="446" y="691">Promote digest</text>
+      <text class="stepText" x="398" y="736">Run workflow:</text>
+      <text class="mono" x="398" y="764">03-promote-local</text>
+      <text class="stepText" x="398" y="808">Choose PR mode</text>
+      <text class="stepText" x="398" y="836">or training-fast.</text>
+      <path class="arrowSoft" d="M725 710 H635"/>
+    </g>
+
+    <g>
+      <rect class="cardSuccess" x="1075" y="650" width="260" height="220" rx="14"/>
+      <circle class="badge" cx="1110" cy="685" r="22"/>
+      <text class="badgeText" x="1110" y="685">7</text>
+      <text class="stepTitle" x="1146" y="691">GitOps updates</text>
+      <text class="stepText" x="1098" y="736">Kustomize receives</text>
+      <text class="stepText" x="1098" y="764">the real digest in:</text>
+      <text class="mono" x="1098" y="796">kubernetes/overlays/</text>
+      <text class="mono" x="1098" y="824">local/</text>
+      <text class="mono" x="1098" y="852">kustomization.yaml</text>
+      <path class="arrow" d="M635 760 H665 V900 H1035 V760 H1075"/>
+    </g>
+
+    <g>
+      <rect class="card" x="1425" y="650" width="260" height="220" rx="14"/>
+      <circle class="badge" cx="1460" cy="685" r="22"/>
+      <text class="badgeText" x="1460" y="685">8</text>
+      <text class="stepTitle" x="1496" y="691">Argo CD sees Git</text>
+      <text class="stepText" x="1448" y="736">Application tracks:</text>
+      <text class="mono" x="1448" y="764">main</text>
+      <text class="stepText" x="1448" y="808">and the local</text>
+      <text class="stepText" x="1448" y="836">overlay path.</text>
+      <path class="arrow" d="M1335 760 H1425"/>
+    </g>
+
+    <g>
+      <rect class="card" x="1425" y="915" width="260" height="160" rx="14"/>
+      <circle class="badge" cx="1460" cy="950" r="22"/>
+      <text class="badgeText" x="1460" y="950">9</text>
+      <text class="stepTitle" x="1496" y="956">Sync cluster</text>
+      <text class="stepText" x="1448" y="1000">Argo CD applies</text>
+      <text class="stepText" x="1448" y="1028">desired state to</text>
+      <text class="stepText" x="1448" y="1056">Kubernetes.</text>
+      <path class="arrow" d="M1555 870 V915"/>
+    </g>
+
+    <g>
+      <rect class="card" x="1775" y="830" width="260" height="190" rx="14"/>
+      <circle class="badge" cx="1810" cy="865" r="22"/>
+      <text class="badgeText" x="1810" y="865">10</text>
+      <text class="stepTitle" x="1848" y="871">Pull image</text>
+      <text class="stepText" x="1798" y="916">Kubernetes uses</text>
+      <text class="mono" x="1798" y="944">harbor-pull-secret</text>
+      <text class="stepText" x="1798" y="982">from cluster-pull</text>
+      <text class="stepText" x="1798" y="1010">robot account.</text>
+      <path class="arrow" d="M1685 995 H1775"/>
+    </g>
+
+    <g>
+      <rect class="cardSuccess" x="1775" y="615" width="260" height="175" rx="14"/>
+      <circle class="badge" cx="1810" cy="650" r="22"/>
+      <text class="badgeText" x="1810" y="650">11</text>
+      <text class="stepTitle" x="1848" y="656">Healthy app</text>
+      <text class="stepText" x="1798" y="701">Pods are Ready.</text>
+      <text class="stepText" x="1798" y="729">Argo CD is Healthy.</text>
+      <text class="stepText" x="1798" y="757">Lens shows pods.</text>
+      <path class="arrow" d="M1905 830 V790"/>
+    </g>
+  </g>
+
+  <g transform="translate(70,1245)">
+    <rect class="cardWarn" x="0" y="0" width="2060" height="120" rx="16"/>
+    <text class="noteTitle" x="32" y="40">Important demo dependency</text>
+    <text class="noteText" x="32" y="75">Harbor project: si_demo_harbor. CI push robot publishes the image. Cluster pull robot creates harbor-pull-secret in namespace si-demo-local.</text>
+    <text class="noteText" x="32" y="101">If harbor-pull-secret is missing or wrong: ImagePullBackOff appears, then the Deployment can exceed its progress deadline.</text>
+  </g>
+
+  <text class="caption" x="70" y="1405">CI never deploys directly to Kind. It updates Git. Argo CD pulls desired state from Git and reconciles the local cluster.</text>
+</svg>

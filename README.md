@@ -17,6 +17,8 @@ Developer
 -> Lens and kubectl observation
 ```
 
+![Post-push CI/CD and GitOps flow](docs/post-push-gitops-flow.svg)
+
 Training audience: developers, DevOps engineers, release engineers, platform engineers, QA engineers, and technical managers who need a practical mental model for modern software delivery.
 
 ## Prerequisites
@@ -138,13 +140,21 @@ Create the Kind cluster and install Argo CD:
 .\scripts\install-argocd.ps1
 ```
 
-Create the Harbor pull secret before syncing the application:
+Create the Harbor pull secret before syncing the application. This creates `harbor-pull-secret` in namespace `si-demo-local`; without it, Kubernetes cannot pull the private image from Harbor and the Deployment will become `ImagePullBackOff` or `ProgressDeadlineExceeded`.
 
 ```powershell
 $env:HARBOR_REGISTRY = "demo.goharbor.io"
 $env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
+```
+
+Use the `cluster-pull` robot token here, not the `ci-push` token used by GitHub Actions.
+
+Verify the secret exists before applying the Argo CD Application:
+
+```powershell
+kubectl -n si-demo-local get secret harbor-pull-secret
 ```
 
 Do not apply the Argo CD Application immediately from a fresh clone. The file `kubernetes/overlays/local/kustomization.yaml` starts with this placeholder image digest:
@@ -168,6 +178,13 @@ Then apply the Argo CD resources:
 ```powershell
 kubectl apply -f argocd/project.yaml
 kubectl apply -f argocd/application-local.yaml
+```
+
+If the Deployment is Degraded in Argo CD, check image pull events first:
+
+```powershell
+kubectl -n si-demo-local get pods -o wide
+kubectl -n si-demo-local get events --sort-by=.lastTimestamp
 ```
 
 Connect Lens to this kubeconfig context:
@@ -267,6 +284,8 @@ Use GitHub Secrets for credentials and repository variables for non-sensitive de
 | `HARBOR_PASSWORD` | Secret | `<robot-token>` | CI push token |
 
 Do not commit real credentials. For robot usernames, copy the exact value from Harbor because the prefix format can vary by Harbor version and configuration.
+
+The GitHub Actions secrets above use the `ci-push` robot account. The local Kubernetes pull secret uses the separate `cluster-pull` robot account and is created from your PowerShell session with `.\scripts\create-registry-secret.ps1`.
 
 ## Training Material Path
 

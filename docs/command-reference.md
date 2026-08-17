@@ -108,6 +108,7 @@ $env:HARBOR_PROJECT = "si_demo_harbor"
 $env:HARBOR_USERNAME = 'robot_si_demo_harbor+cluster-pull'
 $env:HARBOR_PASSWORD = "<robot-token>"
 .\scripts\create-registry-secret.ps1
+kubectl -n si-demo-local get secret harbor-pull-secret
 ```
 
 Git Bash/Linux/macOS:
@@ -118,6 +119,7 @@ export HARBOR_PROJECT=si_demo_harbor
 export HARBOR_USERNAME='robot_si_demo_harbor+cluster-pull'
 export HARBOR_PASSWORD='<robot-token>'
 ./scripts/create-registry-secret.sh
+kubectl -n si-demo-local get secret harbor-pull-secret
 ```
 
 ## Kind
@@ -218,6 +220,7 @@ kubectl config use-context kind-cicd-gitops-demo
 kubectl get events -n si-demo-local --sort-by=.lastTimestamp
 kubectl rollout status deployment/sonali-intellect-demo -n si-demo-local
 kubectl get deployment sonali-intellect-demo -n si-demo-local -o jsonpath='{.spec.template.spec.containers[0].image}'
+kubectl get secret harbor-pull-secret -n si-demo-local
 ```
 
 ## Failure Demo
