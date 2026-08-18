@@ -122,6 +122,7 @@ For the Kubernetes pull account:
 5. Finish the wizard and copy or export the generated secret immediately.
 6. Use this exact generated username and token when creating the local Kubernetes pull secret:
 
+
 ```text
 HARBOR_USERNAME = robot_si_demo_harbor+cluster-pull
 HARBOR_PASSWORD = <cluster-pull robot token>
