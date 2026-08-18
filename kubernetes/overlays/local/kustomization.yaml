@@ -5,7 +5,7 @@ resources:
 - namespace.yaml
 - ../../base
 images:
-- digest: sha256:70af9c9ad759e41554d465818f9162ee10309e7d9fd53159826c39209cdb13e7
+- digest: sha256:9042a97b1864111c356709d9ba26ab7d9bbc4ab5a0037af7f6f3a335de064bcb
   name: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
   newName: demo.goharbor.io/si_demo_harbor/sonali-intellect-demo-cicd-gitops
 patches:
